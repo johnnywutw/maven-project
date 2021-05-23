@@ -1,5 +1,10 @@
 pipeline {
     agent any
+
+    triggers {
+         pollSCM('* * * * *')
+     }
+
     tools{
         maven 'local maven'
     }
@@ -16,6 +21,9 @@ pipeline {
                 }
             }
         }
+    }
+    stage ('Deployments'){
+     parallel{
         stage('Deploy to staging'){
             steps{
                 build job:'deploy-to-staging'
@@ -40,6 +48,6 @@ pipeline {
                 }
             }
         }
-
+     }
     }
 }
