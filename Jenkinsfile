@@ -1,10 +1,5 @@
 pipeline {
     agent any
-
-    triggers {
-         pollSCM('* * * * *')
-     }
-
     tools{
         maven 'local maven'
     }
@@ -16,14 +11,11 @@ pipeline {
             }
             post {
                 success {
-                    echo '开始存档........'
+                    echo '开始存档....'
                     archiveArtifacts artifacts: '**/target/*.war'
                 }
             }
         }
-    }
-    stage ('Deployments'){
-     parallel{
         stage('Deploy to staging'){
             steps{
                 build job:'deploy-to-staging'
@@ -48,6 +40,9 @@ pipeline {
                 }
             }
         }
-     }
+
+
+
+
     }
 }
